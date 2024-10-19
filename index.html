@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>フリップカードで単語学習</title>
+  <style>
+    /* カードのスタイル */
+    .card {
+      perspective: 1000px;
+      width: 300px;
+      height: 200px;
+      margin: 50px auto;
+      cursor: pointer;
+    }
+    /* カードの内側 */
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+    /* カードがフリップしたときのスタイル */
+    .card.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+    /* カードの前面と背面 */
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      color: white;
+      border-radius: 10px;
+    }
+    /* 前面のスタイル（ドイツ語の単語） */
+    .card-front {
+      background-color: #3498db;
+    }
+    /* 背面のスタイル（英語の単語） */
+    .card-back {
+      background-color: #2ecc71;
+      transform: rotateY(180deg);
+    }
+
+    /* ボタンの配置 */
+    .nav-button {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #previous-btn {
+      left: 0;
+    }
+    #next-btn {
+      right: 0;
+    }
+    /* ボタンを非表示にするスタイル */
+    .hidden {
+      display: none;
+    }
+    /* 中央のボタンのスタイル */
+    #back-to-start-btn {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<h2 style="text-align: center;">ドイツ語暗記カード</h2>
+
+<div class="card" onclick="flipCard()">
+  <div class="card-inner">
+    <div class="card-front" id="german-word">
+      ドイツ語単語
+    </div>
+    <div class="card-back" id="japanese-word">
+      英語単語
+    </div>
+  </div>
+</div>
+
+<button id="previous-btn" class="nav-button hidden" onclick="prevWord()">Previous Word</button>
+<button id="back-to-start-btn" onclick="backToStart()">Back to Start</button>
+<button id="next-btn" class="nav-button" onclick="nextWord()">Next Word</button>
+
+<script>
+  // 単語リスト（ドイツ語 - 日本語）
+  const wordList = [
+[
+  { german: 'verbessern', japanese: '改善する' },
+  { german: 'verbieten', japanese: '禁止する' },
+  { german: 'verbrauchen', japanese: '消費する' }, 
+  { german: 'verbringen', japanese: '過ごす' },
+  { german: 'verdienen', japanese: '稼ぐ、もうける' },
+  { german: 'vergessen', japanese: '忘れる' },
+  { german: 'verhalten', japanese: '振る舞う、行動する' },  // "行動する"を追加
+  { german: 'verkaufen', japanese: '売る' },
+  { german: 'verlangen', japanese: '要求する、求める' },  // "求める"を追加
+  { german: 'verlassen', japanese: '去る、離れる' },  // "離れる"を追加
+  { german: 'verletzen', japanese: '怪我をさせる、傷つける' },  // 「怪我をする」は reflexive、"怪我をさせる"に修正
+  { german: 'verlieren', japanese: '失う、なくす' },  // "なくす"を追加
+  { german: 'vermuten', japanese: '推測する、予想する' },  // "予想する"を追加
+  { german: 'verpassen', japanese: '逃す、乗り遅れる' },  // "逃す"を追加
+  { german: 'verschlafen', japanese: '寝坊する' },
+  { german: 'verschwinden', japanese: '消える' },  // "見えなくする" -> "消える"に変更
+  { german: 'versprechen', japanese: '約束する' },
+  { german: 'verstehen', japanese: '理解する' },
+  { german: 'versuchen', japanese: '試みる、やってみる' },  // "やってみる"を追加
+  { german: 'verwechseln', japanese: '（他のものと）取り違える、間違える' },  // "取り違える"を追加
+  { german: 'verwenden', japanese: '使用する、使う' },  // "使う"を追加
+  { german: 'verzeihen', japanese: '許す' },
+  { german: 'vorkommen', japanese: '起こる、見かける' },  // "見かける"を追加
+  { german: 'vorschlagen', japanese: '提案する' },
+  { german: 'vorstellen', japanese: '紹介する、自己紹介する' },
+  { german: 'wachsen', japanese: '成長する、育つ' },  // "育つ"を追加
+  { german: 'wählen', japanese: '選ぶ、選択する' },  // "選択する"を追加
+  { german: 'wandern', japanese: 'ハイキングする、歩き回る' },  // "歩き回る"を追加
+  { german: 'waschen', japanese: '洗う' },
+  { german: 'wechseln', japanese: '替える、両替する、交換する' },  // "交換する"を追加
+  { german: 'weggehen', japanese: '立ち去る、出かける' },  // "出かける"を追加
+  { german: 'weinen', japanese: '泣く' },
+  { german: 'werden', japanese: '～になる' },
+  { german: 'werfen', japanese: '投げる' },
+  { german: 'widmen', japanese: '捧げる、専念する' },  // "専念する"を追加
+  { german: 'wiederholen', japanese: '繰り返す' },
+  { german: 'wiedersehen', japanese: '再会する' },
+  { german: 'wiegen', japanese: '重さを量る' },  // "目方"は通常の会話であまり使われないため、「重さ」に変更
+  { german: 'wissen', japanese: '知っている' },
+  { german: 'wohnen', japanese: '～に住んでいる' },
+  { german: 'wünschen', japanese: '願う、望む' },  // "望む"を追加
+  { german: 'zahlen', japanese: '支払う、払う' },  // "払う"を追加
+  { german: 'zählen', japanese: '数える' },
+  { german: 'zeichnen', japanese: '描く、スケッチする' },  // "スケッチする"を追加
+  { german: 'zeigen', japanese: '見せる、示す' },  // "示す"を追加
+  { german: 'zerbrechen', japanese: '割る、壊す、割れる' },  // "壊す"を追加
+  { german: 'zerstören', japanese: '破壊する' },
+  { german: 'zuhören', japanese: '耳を傾ける、聞く' },  // "聞く"を追加
+  { german: 'zumachen', japanese: '閉める、閉じる' },  // "閉じる"を追加
+  { german: 'zunehmen', japanese: '増える、太る' },  // "太る"を追加
+    // 他の単語を追加
+  ];
+
+  let currentIndex = 0;
+
+  // カードをフリップする関数
+  function flipCard() {
+    const card = document.querySelector('.card');
+    card.classList.toggle('flipped');
+  }
+
+  // 次の単語を表示する関数
+  function nextWord() {
+    if (currentIndex < wordList.length - 1) {
+      currentIndex++;
+    }
+    updateWord();
+  }
+
+  // 前の単語を表示する関数
+  function prevWord() {
+    if (currentIndex > 0) {
+      currentIndex--;
+    }
+    updateWord();
+  }
+
+  // 最初の単語に戻る関数
+  function backToStart() {
+    currentIndex = 0;
+    updateWord();
+  }
+
+  // 単語を更新して、ボタンの表示を調整する関数
+  function updateWord() {
+    // ドイツ語と英語の単語を更新
+    document.getElementById('german-word').innerHTML = wordList[currentIndex].german;
+    document.getElementById('japanese-word').innerHTML = wordList[currentIndex].japanese;
+
+    // フリップがされたままの場合、戻す
+    const card = document.querySelector('.card');
+    if (card.classList.contains('flipped')) {
+      card.classList.remove('flipped');
+    }
+
+    // ボタンの表示を制御
+    document.getElementById('previous-btn').classList.toggle('hidden', currentIndex === 0);
+    document.getElementById('next-btn').classList.toggle('hidden', currentIndex === wordList.length - 1);
+  }
+
+  // ページ読み込み時に最初の単語を表示
+  window.onload = function() {
+    updateWord();
+  }
+</script>
+
+</body>
+</html>
