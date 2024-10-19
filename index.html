@@ -42,7 +42,7 @@
     .card-front {
       background-color: #3498db;
     }
-    /* 背面のスタイル（英語の単語） */
+    /* 背面のスタイル（日本語の単語） */
     .card-back {
       background-color: #2ecc71;
       transform: rotateY(180deg);
@@ -86,7 +86,7 @@
       ドイツ語単語
     </div>
     <div class="card-back" id="japanese-word">
-      英語単語
+      日本語単語
     </div>
   </div>
 </div>
@@ -98,58 +98,56 @@
 <script>
   // 単語リスト（ドイツ語 - 日本語）
   const wordList = [
-[
-  { german: 'verbessern', japanese: '改善する' },
-  { german: 'verbieten', japanese: '禁止する' },
-  { german: 'verbrauchen', japanese: '消費する' }, 
-  { german: 'verbringen', japanese: '過ごす' },
-  { german: 'verdienen', japanese: '稼ぐ、もうける' },
-  { german: 'vergessen', japanese: '忘れる' },
-  { german: 'verhalten', japanese: '振る舞う、行動する' },  // "行動する"を追加
-  { german: 'verkaufen', japanese: '売る' },
-  { german: 'verlangen', japanese: '要求する、求める' },  // "求める"を追加
-  { german: 'verlassen', japanese: '去る、離れる' },  // "離れる"を追加
-  { german: 'verletzen', japanese: '怪我をさせる、傷つける' },  // 「怪我をする」は reflexive、"怪我をさせる"に修正
-  { german: 'verlieren', japanese: '失う、なくす' },  // "なくす"を追加
-  { german: 'vermuten', japanese: '推測する、予想する' },  // "予想する"を追加
-  { german: 'verpassen', japanese: '逃す、乗り遅れる' },  // "逃す"を追加
-  { german: 'verschlafen', japanese: '寝坊する' },
-  { german: 'verschwinden', japanese: '消える' },  // "見えなくする" -> "消える"に変更
-  { german: 'versprechen', japanese: '約束する' },
-  { german: 'verstehen', japanese: '理解する' },
-  { german: 'versuchen', japanese: '試みる、やってみる' },  // "やってみる"を追加
-  { german: 'verwechseln', japanese: '（他のものと）取り違える、間違える' },  // "取り違える"を追加
-  { german: 'verwenden', japanese: '使用する、使う' },  // "使う"を追加
-  { german: 'verzeihen', japanese: '許す' },
-  { german: 'vorkommen', japanese: '起こる、見かける' },  // "見かける"を追加
-  { german: 'vorschlagen', japanese: '提案する' },
-  { german: 'vorstellen', japanese: '紹介する、自己紹介する' },
-  { german: 'wachsen', japanese: '成長する、育つ' },  // "育つ"を追加
-  { german: 'wählen', japanese: '選ぶ、選択する' },  // "選択する"を追加
-  { german: 'wandern', japanese: 'ハイキングする、歩き回る' },  // "歩き回る"を追加
-  { german: 'waschen', japanese: '洗う' },
-  { german: 'wechseln', japanese: '替える、両替する、交換する' },  // "交換する"を追加
-  { german: 'weggehen', japanese: '立ち去る、出かける' },  // "出かける"を追加
-  { german: 'weinen', japanese: '泣く' },
-  { german: 'werden', japanese: '～になる' },
-  { german: 'werfen', japanese: '投げる' },
-  { german: 'widmen', japanese: '捧げる、専念する' },  // "専念する"を追加
-  { german: 'wiederholen', japanese: '繰り返す' },
-  { german: 'wiedersehen', japanese: '再会する' },
-  { german: 'wiegen', japanese: '重さを量る' },  // "目方"は通常の会話であまり使われないため、「重さ」に変更
-  { german: 'wissen', japanese: '知っている' },
-  { german: 'wohnen', japanese: '～に住んでいる' },
-  { german: 'wünschen', japanese: '願う、望む' },  // "望む"を追加
-  { german: 'zahlen', japanese: '支払う、払う' },  // "払う"を追加
-  { german: 'zählen', japanese: '数える' },
-  { german: 'zeichnen', japanese: '描く、スケッチする' },  // "スケッチする"を追加
-  { german: 'zeigen', japanese: '見せる、示す' },  // "示す"を追加
-  { german: 'zerbrechen', japanese: '割る、壊す、割れる' },  // "壊す"を追加
-  { german: 'zerstören', japanese: '破壊する' },
-  { german: 'zuhören', japanese: '耳を傾ける、聞く' },  // "聞く"を追加
-  { german: 'zumachen', japanese: '閉める、閉じる' },  // "閉じる"を追加
-  { german: 'zunehmen', japanese: '増える、太る' },  // "太る"を追加
-    // 他の単語を追加
+    { german: 'verbessern', japanese: '改善する' },
+    { german: 'verbieten', japanese: '禁止する' },
+    { german: 'verbrauchen', japanese: '消費する' }, 
+    { german: 'verbringen', japanese: '過ごす' },
+    { german: 'verdienen', japanese: '稼ぐ、もうける' },
+    { german: 'vergessen', japanese: '忘れる' },
+    { german: 'verhalten', japanese: '振る舞う、行動する' },
+    { german: 'verkaufen', japanese: '売る' },
+    { german: 'verlangen', japanese: '要求する、求める' },
+    { german: 'verlassen', japanese: '去る、離れる' },
+    { german: 'verletzen', japanese: '怪我をさせる、傷つける' },
+    { german: 'verlieren', japanese: '失う、なくす' },
+    { german: 'vermuten', japanese: '推測する、予想する' },
+    { german: 'verpassen', japanese: '逃す、乗り遅れる' },
+    { german: 'verschlafen', japanese: '寝坊する' },
+    { german: 'verschwinden', japanese: '消える' },
+    { german: 'versprechen', japanese: '約束する' },
+    { german: 'verstehen', japanese: '理解する' },
+    { german: 'versuchen', japanese: '試みる、やってみる' },
+    { german: 'verwechseln', japanese: '取り違える、間違える' },
+    { german: 'verwenden', japanese: '使用する、使う' },
+    { german: 'verzeihen', japanese: '許す' },
+    { german: 'vorkommen', japanese: '起こる、見かける' },
+    { german: 'vorschlagen', japanese: '提案する' },
+    { german: 'vorstellen', japanese: '紹介する、自己紹介する' },
+    { german: 'wachsen', japanese: '成長する、育つ' },
+    { german: 'wählen', japanese: '選ぶ、選択する' },
+    { german: 'wandern', japanese: 'ハイキングする、歩き回る' },
+    { german: 'waschen', japanese: '洗う' },
+    { german: 'wechseln', japanese: '替える、両替する、交換する' },
+    { german: 'weggehen', japanese: '立ち去る、出かける' },
+    { german: 'weinen', japanese: '泣く' },
+    { german: 'werden', japanese: '～になる' },
+    { german: 'werfen', japanese: '投げる' },
+    { german: 'widmen', japanese: '捧げる、専念する' },
+    { german: 'wiederholen', japanese: '繰り返す' },
+    { german: 'wiedersehen', japanese: '再会する' },
+    { german: 'wiegen', japanese: '重さを量る' },
+    { german: 'wissen', japanese: '知っている' },
+    { german: 'wohnen', japanese: '～に住んでいる' },
+    { german: 'wünschen', japanese: '願う、望む' },
+    { german: 'zahlen', japanese: '支払う、払う' },
+    { german: 'zählen', japanese: '数える' },
+    { german: 'zeichnen', japanese: '描く、スケッチする' },
+    { german: 'zeigen', japanese: '見せる、示す' },
+    { german: 'zerbrechen', japanese: '割る、壊す、割れる' },
+    { german: 'zerstören', japanese: '破壊する' },
+    { german: 'zuhören', japanese: '耳を傾ける、聞く' },
+    { german: 'zumachen', japanese: '閉める、閉じる' },
+    { german: 'zunehmen', japanese: '増える、太る' }
   ];
 
   let currentIndex = 0;
@@ -184,25 +182,17 @@
 
   // 単語を更新して、ボタンの表示を調整する関数
   function updateWord() {
-    // ドイツ語と英語の単語を更新
-    document.getElementById('german-word').innerHTML = wordList[currentIndex].german;
-    document.getElementById('japanese-word').innerHTML = wordList[currentIndex].japanese;
+    // ドイツ語と日本語の単語をそれぞれ更新
+    document.getElementById('german-word').textContent = wordList[currentIndex].german;
+    document.getElementById('japanese-word').textContent = wordList[currentIndex].japanese;
 
-    // フリップがされたままの場合、戻す
-    const card = document.querySelector('.card');
-    if (card.classList.contains('flipped')) {
-      card.classList.remove('flipped');
-    }
-
-    // ボタンの表示を制御
+    // ナビゲーションボタンの表示制御
     document.getElementById('previous-btn').classList.toggle('hidden', currentIndex === 0);
     document.getElementById('next-btn').classList.toggle('hidden', currentIndex === wordList.length - 1);
   }
 
   // ページ読み込み時に最初の単語を表示
-  window.onload = function() {
-    updateWord();
-  }
+  updateWord();
 </script>
 
 </body>
